@@ -76,7 +76,6 @@ def SolveReCaptcha(driver):
             break
         except Exception:
             pass
-    print("обманул эту грёбанную ракетку")
 
 
 def CheckSolution(driver):
