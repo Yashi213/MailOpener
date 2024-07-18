@@ -35,13 +35,12 @@ def ExcelWriter(ar):
     df.to_excel('result.xlsx')
 
 
-
 def FillArray():
     mails = open("mail.txt")
-    mail_phone = []
+    mail_table = []
     for i in mails:
-        mail_phone.append([i.strip().split(":")[0], i.strip().split(":")[1]])
-    return mail_phone
+        mail_table.append([i.strip().split(":")[0], i.strip().split(":")[1]])
+    return mail_table
 
 
 def SolveTextCaptcha(driver):
@@ -154,4 +153,3 @@ ExcelWriter(mail_phone)
 LogInMail(driver)
 input("Нажмите Enter, чтобы закрыть браузер и завершить работу...")
 driver.quit()
-
