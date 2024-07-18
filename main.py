@@ -1,3 +1,4 @@
+import os.path
 import time
 import re
 
@@ -27,15 +28,19 @@ site_url = "https://account.mail.ru/login"
 
 def ExcelWriter(ar):
     df = pd.DataFrame(ar)
+    if os.path.isfile('result.xlsx'):
+        df = pd.concat([df, pd.read_excel('result.xlsx')], ignore_index=True)
+    if 'Unnamed: 0' in df.columns:
+        df.drop('Unnamed: 0', axis=1, inplace=True)
     df.to_excel('result.xlsx')
+
 
 
 def FillArray():
     mails = open("mail.txt")
-    phones = open("phones.txt")
     mail_phone = []
     for i in mails:
-        mail_phone.append([i.strip().split(":")[0], phones.readline().strip()])
+        mail_phone.append([i.strip().split(":")[0], i.strip().split(":")[1]])
     return mail_phone
 
 
