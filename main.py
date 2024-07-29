@@ -67,7 +67,7 @@ def SolveReCaptcha(driver):
     solver.set_website_key(site_key)
 
     g_response = solver.solve_and_return_solution()
-
+    print(g_response)
     driver.execute_script(f'document.getElementById("g-recaptcha-response").innerHTML = "{g_response}";')
 
     symbols = 'QWERTYUIOPASDFGHJKLZXCVBNM'
@@ -77,7 +77,7 @@ def SolveReCaptcha(driver):
             if 'callback' in resp:
                 driver.execute_script(
                     f"___grecaptcha_cfg.clients['0']['{symbol}']['{symbol}']['callback']('{g_response}')")
-            break
+                break
         except Exception:
             pass
 
