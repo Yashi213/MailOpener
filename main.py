@@ -67,7 +67,6 @@ def SolveReCaptcha(driver):
     solver.set_website_key(site_key)
 
     g_response = solver.solve_and_return_solution()
-    print(g_response)
     driver.execute_script(f'document.getElementById("g-recaptcha-response").innerHTML = "{g_response}";')
 
     symbols = 'QWERTYUIOPASDFGHJKLZXCVBNM'
@@ -98,12 +97,17 @@ def logIn(driver, mail, password, window):
         input_mail.send_keys(Keys.ENTER)
 
         driver.implicitly_wait(10)
+        try:
+            another_way_vk = driver.find_element(By.CSS_SELECTOR,
+                                                 "#root > div > div > div > div > div > form > div:nth-child(2) > div > div.d1EwXTreBolMwvrmbrWB > button:nth-child(2)")
+            another_way_vk.click()
+        except:
+            pass
+        driver.implicitly_wait(10)
         driver.find_element(By.XPATH, "//input[@name='password']").send_keys(password)
         driver.find_element(By.CSS_SELECTOR, CSS_SELECTOR_CONFIRM_PASSWORD).click()
-        print(1)
         return True
     except:
-        print(2)
         return False
 
 
@@ -117,9 +121,15 @@ def LogInMail(driver):
         mail = i.split(":")[0]
         print(mail)
         password = i.split(":")[1]
-        driver.switch_to.window(window)
+        try:
+            driver.switch_to.window(window)
+        except:
+            driver.quit()
         driver.get(site_url)
         driver.implicitly_wait(10)
+        overlay = driver.find_elements(By.CLASS_NAME, 'vkuiTooltip__overlay')
+        if overlay:
+            driver.execute_script("arguments[0].style.display = 'none';", overlay)
         while logIn(driver, mail, password, window):
             driver.implicitly_wait(10)
 
